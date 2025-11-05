@@ -1,13 +1,13 @@
-import { UserButton } from '@clerk/clerk-react'
-import React from 'react'
+import { UserButton } from "@clerk/clerk-react";
+import { useStreamChat } from "../hooks/useStreamChat.js";
 
 const HomePage = () => {
   return (
     <div>
-        <UserButton />
-        Home Page
+      <UserButton />
+      Home Page
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
