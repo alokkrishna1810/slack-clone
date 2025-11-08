@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import AuthProvider from "./providers/Authprovider.jsx";
+import AuthProvider from "./providers/AuthProvider.jsx";
 import * as Sentry from "@sentry/react";
 
 const queryClient = new QueryClient();
