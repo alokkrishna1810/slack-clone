@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useChatContext } from "stream-chat-react";
 import * as Sentry from "@sentry/react";
-import { set } from "mongoose";
 import toast from "react-hot-toast";
 import {
   AlertCircleIcon,
