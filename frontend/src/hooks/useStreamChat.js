@@ -13,8 +13,8 @@ export const useStreamChat = () => {
 
   const {
     data: tokenData,
-    isLoading: tokenLoading,
-    isError: tokenError,
+    isLoading,
+    error,
   } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
@@ -22,17 +22,29 @@ export const useStreamChat = () => {
   });
 
   useEffect(() => {
-    const initChat = async () => {
-      if (!tokenData?.token || !user) return;
+    if (!tokenData?.token || !user || !STREAM_API_KEY) return;
 
+    const client = StreamChat.getInstance(STREAM_API_KEY);
+    let cancelled = false;
+
+    const connect = async () => {
       try {
-        const client = StreamChat.getInstance(STREAM_API_KEY);
-        await client.connectUser({
-          id: user.id,
-          name: user.fullName,
-          image: user.imageUrl,
-        });
-        setChatClient(client);
+        await client.connectUser(
+          {
+            id: user.id,
+            name:
+              user.fullName ??
+              user.username ??
+              user.primaryEmailAddress?.emailAddress ??
+              user.id,
+            image: user.imageUrl ?? undefined,
+          },
+          tokenData.token
+        );
+
+        if (!cancelled) {
+          setChatClient(client);
+        }
       } catch (error) {
         console.log("Error connecting to stream:", error);
 
@@ -49,14 +61,13 @@ export const useStreamChat = () => {
       }
     };
 
-    initChat();
+    connect();
 
     return () => {
-      if (chatClient) {
-        chatClient.disconnectUser();
-      }
+      cancelled = true;
+      client.disconnectUser();
     };
-  }, [tokenData, user, chatClient]);
+  }, [tokenData?.token, user?.id]);
 
-  return { chatClient, isLoading: tokenLoading, error: tokenError };
+  return { chatClient, isLoading, error };
 };
