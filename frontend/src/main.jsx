@@ -10,7 +10,6 @@ import {
   createRoutesFromChildren,
   matchRoutes,
 } from "react-router";
-import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "./providers/AuthProvider.jsx";
